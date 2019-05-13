@@ -12,7 +12,6 @@
 
 .App > .problems {
   grid-area: problems;
-  border: 1px solid red;
   font-size: 72px;
 }
 
@@ -22,11 +21,9 @@
 
 .App > .results {
   grid-area: results;
-  border: 1px solid blue;
   font-size: 40px;
 }
 
 .App > .graphs {
   grid-area: graphs;
-  border: 1px solid green;
 }

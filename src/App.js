@@ -3,11 +3,11 @@ import './App.css';
 import GameResult from './Models/GameResult';
 import ResultsGraph from './Components/ResultsGraph';
 import PlusResult from './Components/PlusResult';
-import useInterval from './Helpers/useInterval';
 import ProblemModel from './Models/ProblemModel';
+import MathProblem from './Components/MathProblem';
 
 function getResultComponents(answers) {
-  return answers.map((answer, i) => {
+  return [...answers].reverse().map((answer, i) => {
     if (answer.operator === '+') {
       return <PlusResult key={i} result={answer} />;
     }
@@ -15,40 +15,48 @@ function getResultComponents(answers) {
   });
 }
 
+function getRandomIntInRange(min, max) {
+  return Math.floor(Math.random() * (max-min)) + min;
+}
+
+
 function App() {
 
   const [results, setResults] = useState(new GameResult());
 
   const [answers, setAnswers] = useState([]);
 
-  useInterval(() => {
-    if (results.remaining > 0) {
-      let correct = Math.floor(Math.random() * 4) > 0;
-      if (correct) {
-        setResults(results.reduceRemaining().incrementCorrect());
+  const [values, setValues] = useState([getRandomIntInRange(100, 999), getRandomIntInRange(100, 999)]);
 
-        let x = Math.floor(Math.random() * 899) + 100;
-        let y = Math.floor(Math.random() * 899) + 100;
-        let sum = x + y;
-        setAnswers(answers.concat(new ProblemModel(x, y, sum, '+')));
-      } else {
+  function checkSubmission(x, y, operator) {
+    return (answer) => {
+      if (results.remaining === 0) {
+        return;
+      }
+
+      if (operator === '+') {
+        if ((x + y) === +answer) {
+          setResults(results.reduceRemaining().incrementCorrect());
+          setAnswers(answers.concat(new ProblemModel(x, y, +answer, '+')));
+          setValues([getRandomIntInRange(100, 999), getRandomIntInRange(100, 999)]);
+          return;
+        }
+
         setResults(results.reduceRemaining().incrementIncorrect());
-
-        let x = Math.floor(Math.random() * 899) + 100;
-        let y = Math.floor(Math.random() * 899) + 100;
-        let sum = x + Math.floor(Math.random() * 1000 - y);
-        setAnswers(answers.concat(new ProblemModel(x, y, sum, '+')));
+        setAnswers(answers.concat(new ProblemModel(x, y, +answer, '+')));
+        setValues([getRandomIntInRange(100, 999), getRandomIntInRange(100, 999)]);
       }
     }
-  }, 200);
+  }
 
   return (
     <div className="App">
       <h1>Eli's Math Game</h1>
       <section className={"problems"}>
+        {results.remaining !== 0 &&
+          <MathProblem x={values[0]} y={values[1]} operator={'+'} submit={checkSubmission(values[0], values[1], '+')}/>
+        }
         {getResultComponents(answers)}
-
-        <div>105 + 416 = <span><input type={"text"} size={5}/></span></div>
       </section>
       <section className={"results"}>
         <div><span>Correct: {results.correct}</span></div>

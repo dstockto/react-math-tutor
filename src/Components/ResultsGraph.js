@@ -1,9 +1,12 @@
 import React from "react";
 
-function ResultsGraph({results}) {
+function ResultsGraph() {
+  // TODO: Return a graph here eventually
   return (
-    <div>Graph for {results.remaining} / {results.total}, {results.correct} - {results.incorrect}</div>
-  )
+    <>
+      {null}
+    </>
+  );
 }
 
 export default ResultsGraph;

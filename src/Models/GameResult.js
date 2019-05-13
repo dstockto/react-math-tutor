@@ -4,8 +4,8 @@ class GameResult {
   remaining;
   total;
 
-  constructor(correct, incorrect, total, remaining = 50) {
-    this.total = total || 50;
+  constructor(correct, incorrect, total, remaining = 10) {
+    this.total = total || 10;
     this.correct = correct || 0;
     this.incorrect = incorrect || 0;
     this.remaining = remaining;
