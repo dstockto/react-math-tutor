@@ -14,8 +14,8 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.2.5"
+    "@vitejs/plugin-react": "^6.0.2",
+    "vite": "^8.0.16"
   },
   "scripts": {
     "dev": "vite",
